@@ -5,4 +5,4 @@ from .models import Games, Books, Videos
 class GamesSerializer(ModelSerializer):
     class Meta:
         model = Games
-        fields = '__all__'
+        fields = ['title', 'finish_date']
