@@ -8,41 +8,47 @@ from .serializer import GamesSerializer
 
 from rest_framework.generics import GenericAPIView
 from rest_framework.response import Response
+from rest_framework.request import Request
 
-# class GamesViewSet(GenericViewSet,
-#                    CreateModelMixin,
-#                    RetrieveModelMixin,
-#                    UpdateModelMixin,
-#                    ListModelMixin):
-#
-#     serializer_class = GamesSerializer
-#     queryset = Games.objects.all()
-#
-#     def get(self, request, *args, **kwargs):
-#         return self.list(request, *args, **kwargs)
-#
-#     def post(self, request, *args, **kwargs):
-#         return self.create(request, *args, **kwargs)
-#
-#     def delete(self, request, *args, **kwargs):
-#         return self.destroy(request, *args, **kwargs)
+from rest_framework import status
+
 
 class GamesViewSet(GenericAPIView):
-
-    # serializer_class = GamesSerializer
-    # queryset = Games.objects.all()
 
     def get_queryset(self):
         return Games.objects.all()
 
-    def get_serializer(self):
+    def get_serializer_class(self):
         return GamesSerializer
 
-    def get(self, request, *args, **kwargs):
+    def get(self, request: Request, *args, **kwargs):
         serializer = GamesSerializer(self.get_queryset(), many=True)
         return Response(serializer.data)
 
-    # def delete(self, request, *args, **kwargs):
-    #     instance = self.get_object()
-    #     instance.delete()
-    #     return Response()
+    def post(self, request: Request, *args, **kwargs):
+        serializer = GamesSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def patch(self, request: Request, *args, **kwargs):
+        serializer = GamesSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def put(self, request: Request, *args, **kwargs):
+        serializer = GamesSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request: Request, *args, **kwargs):
+        serializer = GamesSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.delete()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
