@@ -18,14 +18,32 @@ from django.contrib import admin
 from django.urls import path
 from rest_framework.urlpatterns import format_suffix_patterns
 from digital_library_app import views
-# from rest_framework.routers import DefaultRouter
+from rest_framework.routers import DefaultRouter, SimpleRouter
 
 # router = DefaultRouter()
-# router.register(r'games', views.GamesViewSet)
+# # router.register(r'games', views.GamesViewSet)
+#
+# urlpatterns = [
+#     path('games/', views.GamesViewSetList.as_view()),
+#     path('games/<pk>', views.GamesViewSetModify.as_view()),
+#     path('books/', views.BooksViewSet.as_view()),
+# ]
+# #
+# urlpatterns = format_suffix_patterns(urlpatterns)
 
-urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('games/', views.GamesViewSet.as_view()),
-]
 
-urlpatterns = format_suffix_patterns(urlpatterns)
+# router = SimpleRouter()
+# router.register(
+#     prefix=r"games",
+#     viewset=views.GamesViewSet.as_view(),
+#     basename="games",
+# )
+# urlpatterns = router.urls
+
+router = SimpleRouter()
+router.register(r'games', views.GamesViewSet)
+router.register(r'books', views.BooksViewSet)
+
+
+urlpatterns = router.urls
+
