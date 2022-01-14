@@ -127,9 +127,35 @@ from rest_framework.viewsets import ModelViewSet
     #     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+class CustomMethods:
+    # def __init__(self):
+        # self.queryset = queryset
+        # self.serializer = serializer
+
+
+    def search(self, serializer):
+        # request.query_params.get("end_date")
+        # title = request.query_params.get("title")
+        # queryset = Games.objects.filter(title=title)
+        # print('queryset', queryset, flush=True)
+        # serializer_instance = self.serializer(self.queryset.objects.filter(title=title), many=True)
+        # print('serializer data', serializer.data, flush=True)
+        # print('serializer', serializer, flush=True)
+        if not serializer:
+            return Response({"result": "no data"}, status=status.HTTP_204_NO_CONTENT)
+        return Response(serializer, status=status.HTTP_200_OK)
+
 class GamesViewSet(ModelViewSet):
     serializer_class = GamesSerializer
     queryset = Games.objects.all()
+
+
+    @action(detail=False, methods=['get'], url_path='search')
+    def search_games(self, request: Request, *args, **kwargs):
+        queryset = Games.objects.filter(**{request.query_params.get('key'): request.query_params.get('value')})
+        custom_method = CustomMethods
+        result = custom_method().search(serializer=GamesSerializer(queryset, many=True).data)
+        return result
 
 
 class BooksViewSet(ModelViewSet):
