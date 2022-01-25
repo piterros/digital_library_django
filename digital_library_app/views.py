@@ -11,7 +11,7 @@ from django.core.exceptions import FieldError
 
 
 class CustomMethods:
-    def search(self, serializer, model, search_key, search_value):
+    def search(self, serializer, model, search_key: str, search_value: str) -> Response:
         if search_key and search_value:
             try:
                 queryset = model.filter(**{search_key: search_value})
@@ -37,7 +37,7 @@ class GamesViewSet(ModelViewSet):
     queryset = Games.objects.all()
 
     @action(detail=False, methods=["get"], url_path="search")
-    def search_games(self, request: Request, *args, **kwargs):
+    def search_games(self, request: Request, *args, **kwargs) -> Response:
         return CustomMethods().search(
             serializer=GamesSerializer,
             model=Games.objects,
@@ -51,7 +51,7 @@ class BooksViewSet(ModelViewSet):
     queryset = Books.objects.all()
 
     @action(detail=False, methods=["get"], url_path="search")
-    def search_books(self, request: Request, *args, **kwargs):
+    def search_books(self, request: Request, *args, **kwargs) -> Response:
         return CustomMethods().search(
             serializer=BooksSerializer,
             model=Books.objects,
@@ -65,7 +65,7 @@ class VideosViewSet(ModelViewSet):
     queryset = Videos.objects.all()
 
     @action(detail=False, methods=["get"], url_path="search")
-    def search_videos(self, request: Request, *args, **kwargs):
+    def search_videos(self, request: Request, *args, **kwargs) -> Response:
         return CustomMethods().search(
             serializer=VideosSerializer,
             model=Videos.objects,
