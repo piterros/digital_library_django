@@ -10,7 +10,6 @@ Application stores titles (with additional data) of games, books and videos in o
 - DB_USER=<db_user>
 - DB_PASS=<db_pass>
 - DB_NAME=<db_name>
-- API_KEY=<api_key>
 
 2. Run in project's root catalog: docker-compose up --build
 
